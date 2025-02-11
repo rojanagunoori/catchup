@@ -1,0 +1,213 @@
+﻿<!-- app/views/sessions/new.html.erb -->
+<style>
+  body {
+    #background: linear-gradient(to bottom right, #ffdde1, #ee9ca7);
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom right, #ffdde1, #d63384);
+  }
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .brand {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+
+  .brand h1 {
+    font-size: 2.5rem;
+    color:#d63384;; #ff4d6d;
+    font-weight: bold;
+  }
+
+  .brand p {
+    font-size: 1.2rem;
+    #color: #ff758f;
+    color:#d63384;;
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    border: 2px solid#d63384; #ff4d6d;
+    #text-align: center;
+    animation: slideIn 1s ease-in-out;
+  }
+
+  /* Floating "Login" text */
+  .login-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    #color: #ff4d6d;
+    color: #d63384;
+    #text-transform: uppercase;
+    background: white;
+    padding: 0 15px;
+    position: absolute;
+    top: -15px;
+    left: 30%;
+    transform: translateX(-98%);
+    border-radius: 5px;
+  }
+
+  /* Floating border effect for "Signup" text */
+  .login-title::before,
+  .login-title::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background: #d63384;
+    top: 100%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .login-title::before {
+    left: 0;
+  }
+  .login-title::after {
+    right: 0;
+  }
+
+  .login-title:hover::before,
+  .login-title:hover::after {
+    width: 100%;
+  }
+  
+  .form-label{
+ color: #d63384;
+    }
+
+
+  .form-control {
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #d63384; #ff4d6d;
+    padding: 12px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+  }
+
+  .form-control:focus {
+    border-color: #d63384; #ff758f;
+    box-shadow: 0 0 10px rgba(109, 11, 60, 0.5);#0 0 10px rgba(255, 117, 143, 0.5);
+  }
+  .form-control:hover{
+    border-color:rgb(153, 20, 87);
+  }
+
+  .btn-primary {
+    background:  #d63384; ##ff4d6d;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-primary:hover {
+    background:#b0296e; ##ff758f;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 117, 143, 0.3);
+  }
+
+  .link-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .btn-link {
+    color:#d63384;
+    # #ff4d6d;
+    font-size: 0.9rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-link:hover {
+    color:  #b0296e;
+    ##ff758f;
+    text-decoration: underline;
+    transform: scale(1.1);
+  }
+
+  .error-message {
+  color: #d9534f; /* Red color for errors */
+  background: #f8d7da;
+  border: 1px solid #d63384;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+</style>
+
+<div class="login-container">
+  <!-- Brand and tagline -->
+  <div class="brand">
+    <h1><i class="fas fa-comments"></i> Catchup</h1>
+    <p>Connect through thoughts</p>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-card">
+    <span class="login-title">Login</span>
+    <!--%= form_with(url: login_path, local: true) do |f| %-->
+      <%= form_with(url: login_path, scope: :session, method: :post) do |f| %>
+      <div>
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, class: "form-control", placeholder: "Enter email", required: true %>
+      </div>
+      <div>
+        <%= f.label :password, class: "form-label" %>
+        <%= f.password_field :password, class: "form-control", placeholder: "Enter password", required: true %>
+      </div>
+
+      <!-- Display error messages -->
+      <% if flash[:alert] %>
+        <p class="error-message"><%= flash[:alert] %></p>
+      <% end %>
+
+      <%= f.submit "Login", class: "btn btn-primary" %>
+    <% end %>
+    
+    <div class="link-container">
+      <%= link_to "New user? Signup", signup_path, class: "btn btn-link" %>
+      <%= link_to "Forgot Password?", new_password_reset_path, class: "btn btn-link" %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

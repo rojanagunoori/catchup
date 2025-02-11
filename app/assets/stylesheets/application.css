@@ -1,0 +1,20 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+ /* app/assets/stylesheets/application.css */
+
+/* Simple hover effect for cards */
+.thought-item:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+  }
+  

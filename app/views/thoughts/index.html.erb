@@ -1,0 +1,199 @@
+﻿
+
+
+<!-- app/views/thoughts/index.html.erb -->
+<style>
+
+/* General Styling */
+body {
+  background-color: #f5f5f5;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Share a Thought Box */
+#share-thought-box {
+  #position: fixed; 
+color:#d63384;
+  width: 20%;
+  padding:10px;
+  margin:0.5rem;
+  margin-left:auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction:column;
+  
+}
+
+#toggle-share {
+  background-color: #d63384;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: 0.3s;
+  
+}
+
+#toggle-share:hover {
+  background-color: #d63384;
+  transform: rotate(90deg);
+}
+
+#share-form {
+  display: none;
+  animation: fadeIn 0.3s;
+}
+
+/* Thoughts List */
+.thought-item {
+  
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.thought-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* User Profile and Thought Layout */
+.thought-item .d-flex {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.thought-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+/* Thought Content */
+.thought-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.thought-user {
+  font-weight: bold;
+  color: #333;
+}
+
+.thought-meta {
+  color: #777;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.thought-meta i {
+  margin: 0 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.thought-meta i:hover {
+  color: #e63946;
+}
+
+/* Like Button */
+.like-btn {
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.like-btn.liked {
+  color: #e63946;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+
+<div class="row">
+  <!-- Left side could be used for additional navigation or profile summary -->
+  <div class="col-md-3 d-none d-md-block">
+    <!-- Placeholder for additional sidebar content if needed -->
+  </div>
+  
+  <!-- Main feed area -->
+  <div class="col-md-9">
+    <!-- Share a Thought Box -->
+    <div id="share-thought-box" class="card mb-4">
+      <div class="card-header d-flex  align-items-center justify-content-between">
+      <button id="toggle-share" class="btn btn-outline-secondary">
+          <i class="fas fa-plus"></i>
+        </button>  
+      <h5>Share a Thought</h5>
+        
+      </div>
+      <div class="card-body" id="share-form" style="display: none;">
+        <%= form_with(model: @thought, url: thoughts_path, local: true) do |f| %>
+          <div class="mb-3">
+            <%= f.text_area :content, class: "form-control", placeholder: "What's on your mind?", rows: 3 %>
+          </div>
+          <div class="text-end">
+            <%= f.submit "Share", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- List of Thoughts -->
+    <% @thoughts.each do |thought| %>
+      <div class="card mb-3 thought-item hover-effect">
+        <div class="card-body">
+          <div class="d-flex mb-2">
+            <div class="me-2">
+              <!-- User avatar (placeholder) -->
+              <img src="https://via.placeholder.com/40" class="rounded-circle" alt="avatar">
+            </div>
+            <div>
+              <strong><%= thought.user.name %></strong>
+              <span class="text-muted"> <%= time_ago_in_words(thought.created_at) %> ago</span>
+              <span class="ms-2">
+                <i class="fas fa-heart"></i> 24
+              </span>
+            </div>
+          </div>
+          <p><%= thought.content %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  // Simple JS to toggle the share form visibility
+  document.addEventListener("DOMContentLoaded", function(){
+    const toggle = document.getElementById("toggle-share");
+    const shareForm = document.getElementById("share-form");
+    toggle.addEventListener("click", function(){
+      shareForm.style.display = (shareForm.style.display === "none") ? "block" : "none";
+    });
+  });iy
+</script>
+
+

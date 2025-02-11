@@ -1,0 +1,9 @@
+﻿{
+    "name": "Catchup",
+    "short_name": "Catchup",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000"
+  }
+  

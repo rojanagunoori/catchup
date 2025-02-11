@@ -1,0 +1,40 @@
+﻿<!-- app/views/friends/index.html.erb -->
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5>Friends</h5>
+    <div>
+      <%= form_with url: friends_path, method: :get, local: true, class: "d-inline" do |f| %>
+        <div class="input-group">
+          <%= f.text_field :search, placeholder: "Search friends", class: "form-control" %>
+          <span class="input-group-text"><i class="fas fa-search"></i></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- Pending friend requests -->
+    <div class="mb-3">
+      <i class="fas fa-exclamation-triangle"></i>
+      Pending Requests: <strong><%= @pending_requests.count %></strong>
+    </div>
+    <!-- Friend List -->
+    <% @friends.each do |friend| %>
+      <div class="d-flex align-items-center mb-2 hover-effect">
+        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="avatar">
+        <div>
+          <strong><%= friend.name %></strong><br>
+          <small>
+            32 friends â€¢ 48 thoughts â€¢ Member since Nov'22
+          </small>
+        </div>
+        <div class="ms-auto">
+          <!-- Example buttons for friend actions -->
+          <%= button_to "Accept", accept_friends_path(id: friend.id), method: :post, class: "btn btn-success btn-sm" %>
+          <%= button_to "Reject", reject_friends_path(id: friend.id), method: :post, class: "btn btn-danger btn-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+

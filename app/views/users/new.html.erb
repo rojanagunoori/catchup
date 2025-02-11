@@ -1,0 +1,218 @@
+﻿<!-- app/views/users/new.html.erb -->
+<style>
+  body {
+   # background-color: #ffe4e1; /* Light pink background */
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to bottom right, #ffdde1, #d63384);
+  }
+
+  .signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .logo-container h1 {
+    font-size: 2.5rem;
+    color: #d63384;
+    font-weight: bold;
+    animation: fadeInDown 1s ease-in-out;
+  }
+
+  .logo-container p {
+    #color: #333;
+    font-size: 1rem;
+    animation: fadeInUp 1s ease-in-out;
+    margin-bottom:2rem;
+   # color:#d63384;;
+   color:#d63384;;
+  }
+
+  .card {
+    #background: #fff;
+    #border-radius: 10px;
+    #padding: 30px;
+    #box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    #width: 100%;
+    #max-width: 400px;
+    #animation: fadeInUp 0.8s ease-in-out;
+    background: #fff;
+    
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(140, 11, 89, 0.15);
+    width: 100%;
+    max-width: 400px;
+    animation: fadeInUp 0.8s ease-in-out;
+    position: relative;
+    border: 2px solid #d63384; #ff4d6d;
+    #text-align: center;
+  }
+
+  .card-title {
+    #text-align: center;
+    font-size: 1.8rem;
+    #font-size: 1.5rem;
+    font-weight: bold;
+    color: #d63384;
+    #position: relative;
+    #display: inline-block;
+    background: white;
+    padding: 0 15px;
+    position: absolute;
+    top: -55px;
+    left: 30%;
+    transform: translateX(-90%);
+    border-radius: 5px;
+    
+  }
+
+  /* Floating border effect for "Signup" text */
+  .card-title::before,
+  .card-title::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background: #d63384;
+    top: 100%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .card-title::before {
+    left: 0;
+  }
+  .card-title::after {
+    right: 0;
+  }
+
+  .card-title:hover::before,
+  .card-title:hover::after {
+    width: 100%;
+  }
+
+  .form-label{
+ color: #d63384;
+    }
+
+  .form-control {
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid #d63384; #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .form-control:focus {
+    border-color: #d63384;
+    box-shadow: 0 0 10px rgba(214, 51, 132, 0.5);
+  }
+
+  .form-control:hover{
+    border-color:rgb(153, 20, 87);
+  }
+
+  .btn-primary {
+    background-color: #d63384;
+    border: none;
+    width: 100%;
+     padding: 12px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-primary:hover {
+    background-color: #b0296e;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 117, 143, 0.3);
+  }
+
+  .links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .btn-link {
+    color: #d63384;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .btn-link:hover {
+    color: #b0296e;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="signup-container">
+  <!-- Logo and tagline -->
+  <div class="logo-container text-center mb-4">
+    <h1><i class="fas fa-comments"></i> Catchup</h1>
+    <p>Connect through thoughts</p>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="card">
+    <h3 class="card-title">Signup</h3>
+    <%= form_with(model: @user, local: true) do |f| %>
+      <div class="mb-3">
+        <%= f.label :name , class: "form-label"%>
+        <%= f.text_field :name, class: "form-control", placeholder: "Enter Name", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, class: "form-control", placeholder: "Enter Email" ,required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :password, class: "form-label" %>
+        <%= f.password_field :password, class: "form-control", placeholder: "Enter Password", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :password_confirmation, class: "form-label" %>
+        <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Enter Password Confirmation", required: true %>
+      </div>
+
+      <!-- Display error messages -->
+      <% if flash[:alert] %>
+        <p class="error-message"><%= flash[:alert] %></p>
+      <% end %>
+      
+      <%= f.submit "Signup", class: "btn btn-primary" %>
+
+      <div class="links">
+        <%= link_to "Existing user? Login", login_path, class: "btn-link" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
