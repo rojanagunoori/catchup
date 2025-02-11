@@ -49,6 +49,25 @@
     end
   end
 
+  #resources :thoughts do
+    #resources :comments, only: [:create]
+    #post 'toggle_like', to: 'likes#toggle_like'
+  #end
+
+  resources :thoughts do
+    member do
+      post 'like'
+    end
+    resources :comments, only: [:create]
+  end
+
+
+  resources :comments, only: [] do
+    member do
+      post 'like'
+    end
+  end
+
   
   #root "home#index" # Or your homepage controller
 

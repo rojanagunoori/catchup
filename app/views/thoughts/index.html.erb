@@ -49,6 +49,7 @@ color:#d63384;
 #share-form {
   display: none;
   animation: fadeIn 0.3s;
+ 
 }
 
 /* Thoughts List */
@@ -68,10 +69,10 @@ color:#d63384;
 
 /* User Profile and Thought Layout */
 .thought-item .d-flex {
-  align-items: center;
-  justify-content: center;
+  #align-items: center;
+ # justify-content: center;
   flex-direction: column;
-  text-align: center;
+  #text-align: center;
 }
 
 .thought-item img {
@@ -81,17 +82,91 @@ color:#d63384;
   margin-bottom: 5px;
 }
 
-/* Thought Content */
-.thought-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Thought Sharing Box */
+.share-box {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
 }
 
-.thought-user {
-  font-weight: bold;
-  color: #333;
+.textarea {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
 }
+
+.share-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-share {
+  background: #d63384;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin-top:10px;
+}
+
+.btn-share:hover {
+  background: #b0296e;
+  transform: scale(1.05);
+}
+
+
+
+
+.thought-item {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.card-body{
+  display:flex;
+margin-left:20px;
+align-items: flex-start;
+
+}
+.thought-items{
+  display:flex;
+}
+.circle-icon{
+  font-size:0.5rem;
+  margin:0.3rem;
+  #justify-content: center; 
+  #align-items: center;
+  #align-self:center;
+  top:50;
+  bottom:50;
+  color: #b0296e;
+
+}
+
+/* Thought Content */
+
+
 
 .thought-meta {
   color: #777;
@@ -149,13 +224,14 @@ color:#d63384;
       <h5>Share a Thought</h5>
         
       </div>
-      <div class="card-body" id="share-form" style="display: none;">
+      <div class="share-box" id="share-form" style="display: none;">
         <%= form_with(model: @thought, url: thoughts_path, local: true) do |f| %>
           <div class="mb-3">
-            <%= f.text_area :content, class: "form-control", placeholder: "What's on your mind?", rows: 3 %>
+          <h3>Share a Thought</h3>
+            <%= f.text_area :content, class: "form-control textarea", placeholder: "What's on your mind?", rows: 4 %>
           </div>
           <div class="text-end">
-            <%= f.submit "Share", class: "btn btn-primary" %>
+            <%= f.submit "Share", class: "btn btn-primary  btn-share" %>
           </div>
         <% end %>
       </div>
@@ -163,22 +239,59 @@ color:#d63384;
     
     <!-- List of Thoughts -->
     <% @thoughts.each do |thought| %>
-      <div class="card mb-3 thought-item hover-effect">
-        <div class="card-body">
-          <div class="d-flex mb-2">
-            <div class="me-2">
+      <div class="card  mb-3 thought-item hover-effect">
+        <div class="thought-items ">
+       
               <!-- User avatar (placeholder) -->
               <img src="https://via.placeholder.com/40" class="rounded-circle" alt="avatar">
-            </div>
+         
+          <div class="d-flex mb-2 card-body">   
             <div>
               <strong><%= thought.user.name %></strong>
+              <strong class="circle-icon"><i class="fa-solid fa-circle "></i></strong>
               <span class="text-muted"> <%= time_ago_in_words(thought.created_at) %> ago</span>
+              <i class="fa-solid fa-circle circle-icon"></i>
               <span class="ms-2">
                 <i class="fas fa-heart"></i> 24
               </span>
             </div>
+              <p><%= thought.content %></p>
+
+
+
+              
+              <!-- Like Button -->
+              <%= button_to "Like (#{thought.likes.count})", like_thought_path(thought), method: :post, class: "btn btn-sm btn-outline-danger" %>
+              
+
+    <!-- Comment Form -->
+    <%= form_with(model: [thought, Comment.new], local: true) do |f| %>
+      <div class="input-group">
+        <%= f.text_field :content, placeholder: "Write a comment...", class: "form-control" %>
+        <%= f.submit "Comment", class: "btn btn-primary btn-sm" %>
+      </div>
+    <% end %>
+
+    <!-- List Comments -->
+    <div class="comments-list">
+      <% thought.comments.each do |comment| %>
+        <div class="comment-item">
+          <strong><%= comment.user.name %></strong>: <%= comment.content %> 
+          <span class="text-muted"><%= time_ago_in_words(comment.created_at) %> ago</span>
+
+          <!-- Like Button for Comment -->
+          <%= button_to "Like (#{comment.likes.size})", like_comment_path(comment), method: :post, class: "btn btn-sm btn-outline-danger" %>
+
+        </div>
+      <% end %>
+    </div>
+
+
+              
+
           </div>
-          <p><%= thought.content %></p>
+         
+        
         </div>
       </div>
     <% end %>
