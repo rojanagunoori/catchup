@@ -1,0 +1,20 @@
+<div class="card mx-auto mt-4" style="max-width: 500px;">
+  <div class="card-header">
+    <h5>Edit Thought</h5>
+  </div>
+  <div class="card-body">
+    <%= form_with(model: @thought, url: thought_path(@thought), method: :patch, local: true) do |f| %>
+      
+      <div class="mb-3">
+        <%= f.label :content, "Update your thought:" %>
+        <%= f.text_area :content, class: "form-control", rows: 3, required: true %>
+      </div>
+
+      <div class="text-center">
+        <%= f.submit "Update", class: "btn btn-primary" %>
+        <%= link_to "Cancel", thoughts_path, class: "btn btn-secondary" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

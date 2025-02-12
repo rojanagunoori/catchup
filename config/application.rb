@@ -11,6 +11,15 @@ module Catchup
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
     config.encoding = "utf-8"
+    #config.api_only = true
+    config.api_only = false
+
+
+    config.session_store :cookie_store, key: '_catchup_session'
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_catchup_session'
+
+
+
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

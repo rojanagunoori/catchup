@@ -1,0 +1,5 @@
+<h2>Welcome, <%= @user.name %>!</h2>
+<p>You have <%= @user.friends.count %> friends.</p>
+
+<%= link_to "View Profile", account_path, class: "btn btn-primary" %>
+<%= button_to "Logout", logout_path, method: :delete, class: "btn btn-danger" %>

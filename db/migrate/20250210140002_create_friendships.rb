@@ -1,13 +1,10 @@
-﻿class CreateFriendships < ActiveRecord::Migration[7.0]
+﻿class CreateFriendships < ActiveRecord::Migration[6.1]
   def change
     create_table :friendships do |t|
-      t.integer :user_id
-      t.integer :friend_id
-      t.string :status, default: "pending"
+      t.references :user, foreign_key: true
+      t.references :friend, foreign_key: { to_table: :users } # Self-referencing association
 
       t.timestamps
     end
   end
 end
-
-

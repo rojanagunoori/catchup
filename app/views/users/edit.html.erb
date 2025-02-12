@@ -1,24 +1,35 @@
-﻿<!-- app/views/users/edit.html.erb -->
-<div class="card mx-auto" style="max-width: 500px;">
+﻿<div class="card mx-auto" style="max-width: 500px;">
   <div class="card-header">
     <h5>Edit Profile</h5>
   </div>
   <div class="card-body">
-    <%= form_with(model: @user, url: account_path, local: true, method: :patch) do |f| %>
+    <%= form_with(model: @user, url: account_path, local: true, method: :patch, multipart: true) do |f| %>
+      
       <div class="mb-3">
         <%= f.label :name %>
         <%= f.text_field :name, class: "form-control", required: true %>
       </div>
+
       <div class="mb-3">
         <%= f.label :about, "About Me" %>
         <%= f.text_area :about, class: "form-control", rows: 3 %>
       </div>
-      <!-- Avatar change would require file upload handling -->
+
+      <!-- Profile Picture Upload -->
+      <div class="mb-3">
+        <%= f.label :profile_picture, "Upload Profile Picture" %>
+        <%= f.file_field :profile_picture, class: "form-control" %>
+      </div>
+
+      <!-- Profile Picture via URL -->
+      <div class="mb-3">
+        <%= f.label :profile_picture_url, "Profile Picture URL" %>
+        <%= f.text_field :profile_picture_url, class: "form-control" %>
+      </div>
+
       <div class="text-center">
         <%= f.submit "Update", class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
 </div>
-
-

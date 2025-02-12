@@ -6,7 +6,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "application" %>
+   <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+   <%= javascript_include_tag "rails-ujs" %>
+
     <%= javascript_include_tag "application", type: "module" %>
 
     <!-- Font Awesome CDN -->
@@ -251,12 +253,15 @@
     <div class="container mt-4">
     
     
-      <% if notice %>
-        <div class="alert alert-success"><%= notice %></div>
-      <% end %>
-      <% if alert %>
-        <div class="alert alert-danger"><%= alert %></div>
-      <% end %>
+    <% if controller.flash[:notice] %>
+    <div class="alert alert-success"><%= controller.flash[:notice] %></div>
+  <% end %>
+  
+  
+  <% if flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% end %>
+  
       
       <%= yield %>
     </div>

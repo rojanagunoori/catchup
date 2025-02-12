@@ -1,0 +1,9 @@
+<h1>Thought Details</h1>
+
+<p><strong>Content:</strong> <%= @thought.content %></p>
+<p><strong>User ID:</strong> <%= @thought.user_id %></p>
+<p><strong>Created At:</strong> <%= @thought.created_at.strftime("%B %d, %Y %H:%M") %></p>
+<p><strong>Updated At:</strong> <%= @thought.updated_at.strftime("%B %d, %Y %H:%M") %></p>
+
+<%= link_to 'Back to Thoughts', thoughts_path %>
+<%= link_to 'Delete Thought', thought_path(@thought), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>

@@ -1,5 +1,4 @@
-﻿<!-- app/views/friends/index.html.erb -->
-<div class="card">
+﻿<div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h5>Friends</h5>
     <div>
@@ -11,30 +10,54 @@
       <% end %>
     </div>
   </div>
+  
   <div class="card-body">
-    <!-- Pending friend requests -->
+    <!-- Pending Friend Requests -->
     <div class="mb-3">
       <i class="fas fa-exclamation-triangle"></i>
-      Pending Requests: <strong><%= @pending_requests.count %></strong>
+      <strong>Pending Requests:</strong> <%= @pending_requests.count %>
+      <% if @pending_requests.any? %>
+        <ul class="list-group mt-2">
+          <% @pending_requests.each do |request| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <%= link_to request.sender.name, user_path(request.sender), class: "fw-bold" %>
+              <div>
+                <%= button_to "Accept", accept_friend_path(request.id), method: :post, class: "btn btn-success btn-sm" %>
+                <%= button_to "Reject", reject_friend_path(request.id), method: :delete, class: "btn btn-danger btn-sm" %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted">No pending friend requests.</p>
+      <% end %>
     </div>
-    <!-- Friend List -->
-    <% @friends.each do |friend| %>
-      <div class="d-flex align-items-center mb-2 hover-effect">
-        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="avatar">
-        <div>
-          <strong><%= friend.name %></strong><br>
-          <small>
-            32 friends â€¢ 48 thoughts â€¢ Member since Nov'22
-          </small>
+
+    <!-- Friends List -->
+    <h5 class="mt-4">My Friends</h5>
+    <% if @friends.any? %>
+      <% @friends.each do |friend| %>
+        <div class="d-flex align-items-center mb-2 hover-effect">
+          <%= link_to user_path(friend) do %>
+            <img src="<%= friend.profile_picture || 'https://via.placeholder.com/40' %>" class="rounded-circle me-2" alt="avatar">
+          <% end %>
+          <div>
+            <strong><%= link_to friend.name, user_path(friend), class: "fw-bold text-decoration-none" %></strong><br>
+            <small>
+              <%= friend.friends.count %> friends • <%= friend.thoughts.count %> thoughts • Member since <%= friend.created_at.strftime("%b '%y") %>
+            </small>
+          </div>
+          <div class="ms-auto">
+            <% if current_user.pending_friends.include?(friend) %>
+              <span class="badge bg-warning text-dark">Request Sent</span>
+            <% elsif !current_user.friends.include?(friend) %>
+              <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </div>
         </div>
-        <div class="ms-auto">
-          <!-- Example buttons for friend actions -->
-          <%= button_to "Accept", accept_friends_path(id: friend.id), method: :post, class: "btn btn-success btn-sm" %>
-          <%= button_to "Reject", reject_friends_path(id: friend.id), method: :post, class: "btn btn-danger btn-sm" %>
-        </div>
-      </div>
+      <% end %>
+    <% else %>
+      <p class="text-muted">You have no friends yet.</p>
     <% end %>
   </div>
 </div>
-
-
