@@ -199,7 +199,10 @@
     <% end %>
     
     <div class="link-container">
-      <%= link_to "New user? Signup", signup_path, class: "btn btn-link" %>
+    <!--%= debug signup_path %-->
+
+<%= link_to "New user? Signup", signup_path, class: "btn btn-link", method: :get %>
+
       <%= link_to "Forgot Password?", new_password_reset_path, class: "btn btn-link" %>
     </div>
   </div>

@@ -2,8 +2,9 @@
 
 class UsersController < ApplicationController
 
-  before_action :require_user
-
+  #before_action :require_user
+  #skip_before_action :authenticate_user!, only: [:new, :create]  # Allow signup
+  
 
   def new
     @user = User.new
