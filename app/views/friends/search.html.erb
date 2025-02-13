@@ -1,0 +1,11 @@
+<h1>Search Results</h1>
+
+<% if @friends.any? %>
+  <ul>
+    <% @friends.each do |friend| %>
+      <li><%= friend.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No friends found.</p>
+<% end %>

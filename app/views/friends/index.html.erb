@@ -1,27 +1,36 @@
 ﻿<div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h5>Friends</h5>
-    <div>
-      <%= form_with url: friends_path, method: :get, local: true, class: "d-inline" do |f| %>
-        <div class="input-group">
-          <%= f.text_field :search, placeholder: "Search friends", class: "form-control" %>
-          <span class="input-group-text"><i class="fas fa-search"></i></span>
-        </div>
-      <% end %>
+   
+
+    <!-- app/views/friends/index.html.erb -->
+<div>
+  <%= form_with url: search_friends_path, method: :get, local: true, class: "d-inline" do |f| %>
+    <div class="input-group">
+      <%= f.text_field :search, value: params[:search], placeholder: "Search friends", class: "form-control" %>
+      <span class="input-group-text"><i class="fas fa-search"></i></span>
     </div>
+  <% end %>
+</div>
+
+
+
+
+
   </div>
   
   <div class="card-body">
     <!-- Pending Friend Requests -->
     <div class="mb-3">
       <i class="fas fa-exclamation-triangle"></i>
-      <strong>Pending Requests:</strong> <%= @pending_requests.count %>
+      <strong>Pending Requests:</strong> <%= @pending_requests&.count || 0 %>
       <% if @pending_requests.any? %>
         <ul class="list-group mt-2">
           <% @pending_requests.each do |request| %>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <%= link_to request.sender.name, user_path(request.sender), class: "fw-bold" %>
               <div>
+              <p><%= request.sender.name %> sent you a friend request.</p>
                 <%= button_to "Accept", accept_friend_path(request.id), method: :post, class: "btn btn-success btn-sm" %>
                 <%= button_to "Reject", reject_friend_path(request.id), method: :delete, class: "btn btn-danger btn-sm" %>
               </div>
@@ -35,6 +44,39 @@
 
     <!-- Friends List -->
     <h5 class="mt-4">My Friends</h5>
+
+    <% if @friends.empty? %>
+  <h3>All Users:</h3>
+  <ul>
+    <% @users.each do |user| %>
+     <li><%= user.name %> (<%= link_to "Add Friend", friend_requests_path(user_id: user.id), method: :post %>)</li>
+
+    <% end %>
+  </ul>
+<% else %>
+  <h3>Your Friends:</h3>
+  <ul>
+    <% @friends.each do |friend| %>
+      <%= link_to user_path(friend) do %>
+            <img src="<%= friend.profile_picture || 'https://via.placeholder.com/40' %>" class="rounded-circle me-2" alt="avatar">
+          <% end %>
+      <li>  <strong><%= link_to friend.name, user_path(friend), class: "fw-bold text-decoration-none" %></strong><br>
+      <small>
+      <%= friend.friends.count %> friends • <%= friend.thoughts.count %> thoughts • Member since <%= friend.created_at.strftime("%b '%y") %>
+    </small></li>
+    <div class="ms-auto">
+            <% if current_user.public_pending_friend_requests.include?(friend) %>
+              <span class="badge bg-warning text-dark">Request Sent</span>
+            <% elsif !current_user.friends.include?(friend) %>
+          <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
+
+
+            <% end %>
+          </div>
+    <% end %>
+  </ul>
+<% end %>
+
     <% if @friends.any? %>
       <% @friends.each do |friend| %>
         <div class="d-flex align-items-center mb-2 hover-effect">
@@ -48,10 +90,12 @@
             </small>
           </div>
           <div class="ms-auto">
-            <% if current_user.pending_friends.include?(friend) %>
+            <% if current_user.public_pending_friend_requests.include?(friend) %>
               <span class="badge bg-warning text-dark">Request Sent</span>
             <% elsif !current_user.friends.include?(friend) %>
-              <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
+          <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
+
+
             <% end %>
           </div>
         </div>
@@ -61,3 +105,14 @@
     <% end %>
   </div>
 </div>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% elsif flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+

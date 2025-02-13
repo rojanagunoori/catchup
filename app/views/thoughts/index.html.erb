@@ -242,8 +242,13 @@ align-items: flex-start;
       <div class="card  mb-3 thought-item hover-effect">
         <div class="thought-items ">
        
+
+        <% if thought.user&.profile_picture.present? %>
+  <%= image_tag thought.user.profile_picture, class: "rounded-circle", width: 100 %>
+<% end %>
+
               <!-- User avatar (placeholder) -->
-              <img src="https://via.placeholder.com/40" class="rounded-circle" alt="avatar">
+             
          
           <div class="d-flex mb-2 card-body">   
             <div>

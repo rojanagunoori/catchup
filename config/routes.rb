@@ -1,6 +1,11 @@
 ﻿Rails.application.routes.draw do
+ # devise_for :users
+  #devise_for :users, skip: [:registrations]
+
   # Root route (login page if not authenticated)
   root to: "sessions#new"
+  #root to: "home#index"
+
   
   # Authentication routes
   get    '/login',  to: 'sessions#new'
@@ -43,18 +48,32 @@
     end
   end
 
+  #resources :friend_requests, only: [:create, :destroy] 
+  resources :friend_requests, only: [:create, :destroy] do
+    member do
+      patch :accept  # This enables the accept action
+      delete :reject # Route for rejecting requests
+    end
+  end
+  
+
+
+  accept_friend_path  POST  /friends/:id/accept(.:format)  friends#accept
+
+
   # ActionCable for real-time updates
   mount ActionCable.server => '/cable'
 
   # PWA manifest
-  get '/manifest.json', to: ->(_) { [200, { "Content-Type" => "application/json" }, [File.read(Rails.root.join("public", "manifest.json"))]] }
+   get '/manifest.json', to: ->(_) { [200, { "Content-Type" => "application/json" }, [File.read(Rails.root.join("public", "manifest.json"))]] }
 
   # Friends management
-  resources :friends, only: [:index] do
+    resources :friends, only: [:index] do
+    get :search, on: :collection
     member do
-      post 'add'
-      post 'accept'
-      delete 'reject'
+      post 'add'#, on: :member    # Generates /friends/:id/add
+      post 'accept'#, on: :member # Generates /friends/:id/accept
+      delete 'reject'#, on: :member # Generates /friends/:id/reject
     end
   end
 end

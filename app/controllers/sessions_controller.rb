@@ -1,5 +1,6 @@
 ﻿# app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
+  #before_action :authenticate_user!
   skip_before_action :verify_authenticity_token, only: [:create]
 
 
@@ -9,6 +10,10 @@ class SessionsController < ApplicationController
 
     def create
       user = User.find_by(email: params[:session][:email].downcase) # Correct key
+
+
+     
+
       if user && user.authenticate(params[:session][:password]) # Correct key
         session[:user_id] = user.id
         redirect_to dashboard_path, notice: "Logged in successfully."
