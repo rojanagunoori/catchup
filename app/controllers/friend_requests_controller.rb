@@ -57,7 +57,7 @@ class FriendRequestsController < ApplicationController
     end
 
 
-    def update
+    def update1
       request = FriendRequest.find(params[:id])
       
       if params[:status] == "accepted"
@@ -72,12 +72,49 @@ class FriendRequestsController < ApplicationController
     
       redirect_to friends_path
     end
+
+
+    def show
+      @friend_request = FriendRequest.find(params[:id])
+    end
+    
     
     
 
     def new
       @friend_request = FriendRequest.new
     end
+
+    def update
+      Rails.logger.debug "Received params: #{params.inspect}"  # Debugging line
+    
+      @friend_request = FriendRequest.find(params[:id])
+      if @friend_request.update(friend_request_params)
+        flash[:notice] = "Friend request updated!"
+        redirect_to friends_path
+
+        #redirect_to friend_request_path(@friend_request)
+        #redirect_to user_path(current_user)
+
+      else
+        flash[:alert] = "Error updating friend request."
+        render :edit
+      end
+    end
+    
+    
+    
+    private
+    
+    def friend_request_params
+      if params[:friend_request].present?
+        params.require(:friend_request).permit(:status)
+      else
+        params.permit(:status)  # Allow direct `params[:status]`
+      end
+      #params.require(:friend_request).permit(:status)
+    end
+    
     
   end
   

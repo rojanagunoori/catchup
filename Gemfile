@@ -71,3 +71,5 @@ end
 gem "bcrypt", "~> 3.1"
 
 gem "devise", "~> 4.9"
+
+gem "letter_opener", "~> 1.10", :group => :development

@@ -3,8 +3,22 @@ class PasswordResetsController < ApplicationController
     def new
         render json: { message: "Password reset request received" } if request.format.json?
     end
-  
+
     def create
+      user = User.find_by(email: params[:email])
+  
+      if user
+        user.generate_password_reset_token!  # Ensure this method exists in User model
+        PasswordResetMailer.with(user: user).send_reset_email.deliver_now
+        flash[:notice] = "Password reset instructions sent to your email."
+        redirect_to login_path
+      else
+        flash[:alert] = "Email not found."
+        render :new
+      end
+    end
+  
+    def create1
       @user = User.find_by(email: params[:email])
       if @user
         # Here you would generate a token and send an email

@@ -49,7 +49,7 @@
   end
 
   #resources :friend_requests, only: [:create, :destroy] 
-  resources :friend_requests, only: [:create, :destroy] do
+  resources :friend_requests, only: [:create, :destroy,:update, :show] do
     member do
       post :accept   # Change from PATCH to POST to avoid conflicts
       post :reject   # Change from DELETE to POST to avoid conflicts
@@ -58,7 +58,13 @@
     end
   end
 
-  resources :friendships, only: [:create, :update, :destroy]
+  resources :friendships, only: [:create, :update, :destroy, :show] do
+    member do
+      delete :remove
+    end
+  end
+
+
   
 
 
