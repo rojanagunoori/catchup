@@ -4,14 +4,7 @@
    
 
     <!-- app/views/friends/index.html.erb -->
-<div>
-  <%= form_with url: search_friends_path, method: :get, local: true, class: "d-inline" do |f| %>
-    <div class="input-group">
-      <%= f.text_field :search, value: params[:search], placeholder: "Search friends", class: "form-control" %>
-      <span class="input-group-text"><i class="fas fa-search"></i></span>
-    </div>
-  <% end %>
-</div>
+
 
 
 
@@ -20,6 +13,23 @@
   </div>
   
   <div class="card-body">
+
+  <h3>Friend Requests</h3>
+<% if @received_requests.present? && @received_requests.any? %>
+  <ul>
+    <% @received_requests.each do |request| %>
+      <li>
+        <%= request.sender.name %> sent you a friend request.
+        <%= button_to "✅ Accept", friend_request_path(request), method: :patch, params: { status: "accepted" }, class: "btn btn-success btn-sm" %>
+        <%= button_to "❌ Reject", friend_request_path(request), method: :patch, params: { status: "rejected" }, class: "btn btn-danger btn-sm" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No friend requests yet.</p>
+<% end %>
+
+
     <!-- Pending Friend Requests -->
     <div class="mb-3">
       <i class="fas fa-exclamation-triangle"></i>
@@ -28,11 +38,12 @@
         <ul class="list-group mt-2">
           <% @pending_requests.each do |request| %>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <%= link_to request.sender.name, user_path(request.sender), class: "fw-bold" %>
+            <%= link_to request.sender.name, user_path(request.sender), class: "fw-bold" %>
+
               <div>
               <p><%= request.sender.name %> sent you a friend request.</p>
-                <%= button_to "Accept", accept_friend_path(request.id), method: :post, class: "btn btn-success btn-sm" %>
-                <%= button_to "Reject", reject_friend_path(request.id), method: :delete, class: "btn btn-danger btn-sm" %>
+                <%= button_to "Accept", accept_friend_path(request), method: :post, class: "btn btn-success btn-sm" %>
+                <%= button_to "Reject", reject_friend_path(request), method: :delete, class: "btn btn-danger btn-sm" %>
               </div>
             </li>
           <% end %>
@@ -43,22 +54,50 @@
     </div>
 
     <!-- Friends List -->
-    <h5 class="mt-4">My Friends</h5>
+   
+    <h2>Find Friends</h2>
+<%= form_with url: search_friends_path, method: :get, local: true do |form| %>
+  <%= form.text_field :query, placeholder: "Search by name..." %>
+  <%= form.submit "Search" %>
+<% end %>
 
     <% if @friends.empty? %>
   <h3>All Users:</h3>
   <ul>
+   <% if @users.present? %>
     <% @users.each do |user| %>
-     <li><%= user.name %> (<%= link_to "Add Friend", friend_requests_path(user_id: user.id), method: :post %>)</li>
+     <li>
+     <%= link_to user_path(user) do %>
+      <%= image_tag(user.profile_picture.presence || 'https://via.placeholder.com/40', class: "rounded-circle me-2", alt: "avatar") %>
+
+        <% end %>
+      <%= link_to user.name, friend_path(user) %>
+      <% unless current_user.friends.include?(user) || current_user.pending_friend_requests.exists?(sender_id: user.id) %>
+        <%= button_to "Add Friend", add_friend_path(user), method: :post %>
+      <% end %>
+    </li>
 
     <% end %>
+   <% else %>
+    <p>No users found.</p>
+  <% end %>
   </ul>
 <% else %>
   <h3>Your Friends:</h3>
   <ul>
     <% @friends.each do |friend| %>
       <%= link_to user_path(friend) do %>
-            <img src="<%= friend.profile_picture || 'https://via.placeholder.com/40' %>" class="rounded-circle me-2" alt="avatar">
+        <%= image_tag(friend.profile_picture.presence || 'https://via.placeholder.com/40', class: "rounded-circle me-2", alt: "avatar") %>
+        <p><%= friend.name %></p>
+        <% if friend.present? %>
+  <% friendship = Friendship.find_by(user: current_user, friend: friend) || Friendship.find_by(user: friend, friend: current_user) %>
+<% end %>
+
+        <% if friendship %>
+          <%= button_to "Remove Friend", friendship_path(friendship), method: :delete, data: { confirm: "Are you sure you want to remove this friend?" } %>
+        <% end %>
+        
+
           <% end %>
       <li>  <strong><%= link_to friend.name, user_path(friend), class: "fw-bold text-decoration-none" %></strong><br>
       <small>
@@ -68,7 +107,7 @@
             <% if current_user.public_pending_friend_requests.include?(friend) %>
               <span class="badge bg-warning text-dark">Request Sent</span>
             <% elsif !current_user.friends.include?(friend) %>
-          <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
+          <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm", form: { "data-turbo" => "false" } %>
 
 
             <% end %>
@@ -77,32 +116,7 @@
   </ul>
 <% end %>
 
-    <% if @friends.any? %>
-      <% @friends.each do |friend| %>
-        <div class="d-flex align-items-center mb-2 hover-effect">
-          <%= link_to user_path(friend) do %>
-            <img src="<%= friend.profile_picture || 'https://via.placeholder.com/40' %>" class="rounded-circle me-2" alt="avatar">
-          <% end %>
-          <div>
-            <strong><%= link_to friend.name, user_path(friend), class: "fw-bold text-decoration-none" %></strong><br>
-            <small>
-              <%= friend.friends.count %> friends • <%= friend.thoughts.count %> thoughts • Member since <%= friend.created_at.strftime("%b '%y") %>
-            </small>
-          </div>
-          <div class="ms-auto">
-            <% if current_user.public_pending_friend_requests.include?(friend) %>
-              <span class="badge bg-warning text-dark">Request Sent</span>
-            <% elsif !current_user.friends.include?(friend) %>
-          <%= button_to "➕ Add Friend", friend_requests_path(friend_id: friend.id), method: :post, class: "btn btn-primary btn-sm" %>
-
-
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-muted">You have no friends yet.</p>
-    <% end %>
+    
   </div>
 </div>
 

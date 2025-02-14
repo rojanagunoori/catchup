@@ -12,14 +12,20 @@ class User < ApplicationRecord
     has_many :thoughts, dependent: :destroy
     has_many :friendships, dependent: :destroy
     has_many :friends, through: :friendships, source: :friend
-    has_many :sent_friend_requests, class_name: 'Friendship', foreign_key: 'user_id'
-    has_many :received_friend_requests, class_name: 'Friendship', foreign_key: 'friend_id'
-    has_many :friends, through: :sent_friend_requests, source: :friend
+    #has_many :sent_friend_requests, class_name: 'Friendship', foreign_key: 'user_id'
+    #has_many :received_friend_requests, class_name: 'Friendship', foreign_key: 'friend_id'
+    #has_many :friends, through: :sent_friend_requests, source: :friend
+    has_many :friends, through: :friendships, source: :friend
 
 
+    has_many :pending_requests, -> { where(status: "pending") }, class_name: "Friendship", foreign_key: "friend_id"
+    has_many :friend_requests, through: :pending_requests, source: :user
 
-    has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: 'sender_id'
-    has_many :received_friend_requests, class_name: 'FriendRequest', foreign_key: 'receiver_id'
+
+    # Friend Requests
+    has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: 'sender_id', dependent: :destroy
+    has_many :received_friend_requests, class_name: 'FriendRequest', foreign_key: 'receiver_id', dependent: :destroy
+    
 
     has_many :friends, class_name: "User", foreign_key: "friend_id"
     has_one_attached :profile_picture # If using Active Storage for image upload
@@ -30,6 +36,10 @@ class User < ApplicationRecord
     has_many :comments, dependent: :destroy
 
     # Associations
+
+
+    # Profile Picture (If using Active Storage)
+    has_one_attached :profile_picture
     
     
     # Validations
@@ -54,6 +64,26 @@ class User < ApplicationRecord
      def public_pending_friend_requests
         received_friend_requests.where(status: "pending")
      end
+
+
+     def send_friend_request(friend)
+      friendships.create(friend: friend, status: "pending")
+    end
+  
+    def accept_friend_request(user)
+      friendship = pending_requests.find_by(user: user)
+      friendship.update(status: "accepted") if friendship
+    end
+  
+    def reject_friend_request(user)
+      friendship = pending_requests.find_by(user: user)
+      friendship.update(status: "rejected") if friendship
+    end
+  
+    def remove_friend(friend)
+      friendship = friendships.find_by(friend: friend) || friend.friendships.find_by(friend: self)
+      friendship.destroy if friendship
+    end
 
     
     

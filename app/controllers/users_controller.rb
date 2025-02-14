@@ -8,8 +8,18 @@ class UsersController < ApplicationController
 
   
 
+  def index
+    @users = User.all
+    render json: @users
+  end
+
+
+
   def new
     @user = User.new
+    #@users = User.where.not(id: current_user.id)
+    #@users = User.where.not(id: current_user.id) if current_user.present?
+
   end
 
   #def show
@@ -78,6 +88,14 @@ class UsersController < ApplicationController
       flash[:alert] = @user.errors.full_messages.join(", ")
       render :edit
     end
+  end
+
+  def friend_requests
+    @friend_requests = current_user.pending_requests
+  end
+
+  def friends
+    @friends = current_user.friendships.where(status: "accepted").map(&:friend)
   end
   
 

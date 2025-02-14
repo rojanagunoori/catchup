@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_13_043329) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_14_042302) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -53,9 +53,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_13_043329) do
   create_table "friend_requests", force: :cascade do |t|
     t.integer "sender_id", null: false
     t.integer "receiver_id", null: false
-    t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
+    t.integer "friend_status", default: 0, null: false
     t.index ["receiver_id"], name: "index_friend_requests_on_receiver_id"
     t.index ["sender_id"], name: "index_friend_requests_on_sender_id"
   end
@@ -63,9 +64,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_13_043329) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_id"
-    t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0, null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -106,6 +109,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_13_043329) do
   add_foreign_key "comments", "users"
   add_foreign_key "friend_requests", "users", column: "receiver_id"
   add_foreign_key "friend_requests", "users", column: "sender_id"
+  add_foreign_key "friendships", "users"
+  add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "likes", "comments"
   add_foreign_key "likes", "thoughts"
   add_foreign_key "likes", "users"

@@ -18,7 +18,7 @@
 
   
   # User registration
-  resources :users, only: [:show, :new, :create]
+  resources :users, only: [:index,:show, :new, :create, :update, :destroy]
   get  '/signup',  to: 'users#new'
   post '/signup',  to: 'users#create'
   
@@ -51,14 +51,18 @@
   #resources :friend_requests, only: [:create, :destroy] 
   resources :friend_requests, only: [:create, :destroy] do
     member do
-      patch :accept  # This enables the accept action
+      post :accept   # Change from PATCH to POST to avoid conflicts
+      post :reject   # Change from DELETE to POST to avoid conflicts
+      #patch :accept  # This enables the accept action
       delete :reject # Route for rejecting requests
     end
   end
+
+  resources :friendships, only: [:create, :update, :destroy]
   
 
 
-  accept_friend_path  POST  /friends/:id/accept(.:format)  friends#accept
+  #accept_friend_path  POST  /friends/:id/accept(.:format)  friends#accept
 
 
   # ActionCable for real-time updates
@@ -68,8 +72,11 @@
    get '/manifest.json', to: ->(_) { [200, { "Content-Type" => "application/json" }, [File.read(Rails.root.join("public", "manifest.json"))]] }
 
   # Friends management
-    resources :friends, only: [:index] do
-    get :search, on: :collection
+    resources :friends, only: [:index, :show] do
+    collection do
+      get :search # Allows searching for a user
+    end
+    #get :search, on: :collection
     member do
       post 'add'#, on: :member    # Generates /friends/:id/add
       post 'accept'#, on: :member # Generates /friends/:id/accept

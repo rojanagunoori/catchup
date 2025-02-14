@@ -1,10 +1,14 @@
-﻿# app/models/friendship.rb
-class Friendship < ApplicationRecord
-    belongs_to :user      # the one who sent the request
-    belongs_to :friend, class_name: 'User'
-    
-    # status: pending, accepted, rejected
-    validates :status, inclusion: { in: %w[pending accepted rejected] }
-  end
-  
+﻿class Friendship < ApplicationRecord
+  belongs_to :user
+  belongs_to :friend, class_name: 'User'
 
+  validates :user_id, uniqueness: { scope: :friend_id, message: "Friend request already sent" }
+
+  # Enum definition
+  #enum friendship_status: { pending: 0, accepted: 1, rejected: 2 }, _prefix: true
+  #enum status: { pending: 0, accepted: 1, rejected: 2 }, _prefix: true
+  #enum status: { pending: 0, accepted: 1, rejected: 2 }, _prefix: :status
+  enum :status, { pending: 0, accepted: 1, rejected: 2 }, prefix: :status
+
+
+end

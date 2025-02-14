@@ -1,0 +1,6 @@
+<% @friend_requests.each do |request| %>
+    <p><%= request.user.name %> sent you a friend request.</p>
+    <%= button_to "Accept", friendship_path(request), method: :patch, params: { status: "accepted" } %>
+    <%= button_to "Reject", friendship_path(request), method: :patch, params: { status: "rejected" } %>
+  <% end %>
+  
