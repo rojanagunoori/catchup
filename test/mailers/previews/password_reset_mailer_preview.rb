@@ -1,3 +1,8 @@
-# Preview all emails at http://localhost:3000/rails/mailers/password_reset_mailer
 class PasswordResetMailerPreview < ActionMailer::Preview
-end
+    def reset_email
+      user = User.first # Replace with a valid user if needed
+      token = "fake-reset-token" # Use a sample token for preview
+      PasswordResetMailer.with(user: user, token: token).reset_email
+    end
+  end
+  

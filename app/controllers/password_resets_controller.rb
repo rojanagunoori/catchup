@@ -9,7 +9,8 @@ class PasswordResetsController < ApplicationController
   
       if user
         user.generate_password_reset_token!  # Ensure this method exists in User model
-        PasswordResetMailer.with(user: user).send_reset_email.deliver_now
+        #PasswordResetMailer.with(user: user).send_reset_email.deliver_now
+        PasswordResetMailer.with(user: user, token: user.reset_password_token).reset_email.deliver_now
         flash[:notice] = "Password reset instructions sent to your email."
         redirect_to login_path
       else

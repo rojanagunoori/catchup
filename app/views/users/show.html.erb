@@ -1,40 +1,359 @@
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom right, #ffdde1, #d63384);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  margiin-top:1.5rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* 🚀 Profile Section with 3 Columns */
+.profile-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 2px solid #d63384;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.profile-pic {
+  text-align: center;
+}
+
+.profile-pic img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #d63384;
+  padding: 5px;
+}
+
+.profile-info h3 {
+  color: #d63384;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.profile-info p {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.profile-actions {
+  text-align: right;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #d63384;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #b0296e;
+  transform: scale(1.05);
+}
+
+/* 🌟 Thoughts Section */
+.thought-card {
+  background: white;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 15px;
+  border-left: 5px solid #d63384;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 🚀 Thought Layout (2 Rows) */
+.thought-header {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.thought-header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #d63384;
+}
+
+.thought-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.thought-details h5 {
+  margin: 0;
+  color: #d63384;
+  font-weight: bold;
+}
+
+.thought-details p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* 📝 Thought Content */
+.thought-content {
+  padding-top: 10px;
+}
+
+.thought-content p {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ❤️ Like & Comment Toggle */
+.thought-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  color: #d63384;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.like-btn.liked {
+  color: #b0296e;
+}
+
+.comment-toggle {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.comments-section {
+  display: none;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.comments-section p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* 🎬 Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 8px;
+  border-top: 1px solid #d63384;
+}
+
+.comment-box {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #d63384;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.comment-box:focus {
+  border-color: #b0296e;
+  box-shadow: 0 0 8px rgba(214, 51, 132, 0.5);
+}
+
+.submit-comment {
+  padding: 10px 15px;
+  background-color: #d63384;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-comment:hover {
+  background-color: #b0296e;
+  transform: scale(1.05);
+  box-shadow: 0 5px 10px rgba(214, 51, 132, 0.3);
+}
+
+.submit-comment:active {
+  background-color: #921e57;
+  transform: scale(0.95);
+}
+
+
+
+
+</style>
+
+
+
+
 <div class="container">
-  <div class="card mx-auto" style="max-width: 600px;">
-    <div class="card-body text-center">
+  <!-- Profile Section -->
+  <div class="profile-container">
+    <!-- Profile Picture (1st Column) -->
+    <div class="profile-pic">
       <% if @user.profile_picture.present? %>
-        <%= image_tag @user.profile_picture, class: "rounded-circle", width: 100 %>
+        <%= image_tag @user.profile_picture, class: "rounded-circle" %>
       <% end %>
-      <h3 class="mt-3"><%= @user.name %></h3>
+    </div>
+
+    <!-- User Info (2nd Column) -->
+    <div class="profile-info">
+      <h3><%= @user.name %></h3>
       <p><%= @user.about %></p>
       <p><strong>Friends:</strong> <%= @friends_count %></p>
       <p><strong>Thoughts:</strong> <%= @user.thoughts.count %></p>
-
-      <%= link_to "Edit Profile", edit_account_path, class: "btn btn-primary" %>
     </div>
-  </div>
 
-  <h4 class="mt-4">My Thoughts</h4>
-  <div class="list-group">
-    <% if @thoughts.present? %>
-      <% @thoughts.each do |thought| %>
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-          <p class="mb-0"><%= thought.content %></p>
-          
-          <!-- Edit & Delete Buttons -->
-          <div>
-            <%= link_to "Edit", edit_thought_path(thought), class: "btn btn-sm btn-warning mx-1" %>
-            <%= link_to 'Delete Thought', thought_path(thought), 
-              method: :delete, 
-              data: { confirm: "Are you sure you want to delete this thought?" }, 
-              class: "btn btn-danger" %>
-          </div>
-        </div>
-      <% end %>
+    <!-- Actions: Show 'Edit Profile' if current user, otherwise 'Add Friend' -->
+  <div class="profile-actions">
+    <% if current_user == @user %>
+      <%= link_to "Edit Profile", edit_account_path, class: "btn btn-primary" %>
     <% else %>
-      <p>No thoughts available.</p>
+      <%= link_to "Add Friend", class: "btn btn-primary" %>
     <% end %>
   </div>
-
-  <%= button_to "Log out from all devices", logout_all_path, method: :delete, data: { confirm: "Are you sure?" } %>
-
 </div>
+
+    <!-- Add Friend Button (3rd Column)
+    <div class="profile-actions"><%= link_to "Edit Profile", edit_account_path, class: "btn btn-primary" %></div>
+    <div class="profile-actions">
+      <%= link_to "Add Friend", add_friend_path(@user), class: "btn btn-primary" %>
+    </div>
+  </div> -->
+
+  <!-- Thoughts Section -->
+  <h4 class="mt-4">My Thoughts</h4>
+  <% if @thoughts.present? %>
+    <% @thoughts.each do |thought| %>
+      <div class="thought-card">
+        <!-- Row 1: Profile & Details -->
+        <div class="thought-header">
+          <div>
+            <%= image_tag thought.user.profile_picture, class: "rounded-circle", width: 50 %>
+          </div>
+          <div class="thought-details">
+            <h5><%= thought.user.name %></h5>
+            <p><%= time_ago_in_words(thought.created_at) %> ago • <%= thought.likes.count %> Likes</p>
+          </div>
+        </div>
+
+        <!-- Row 2: Thought Content -->
+        <div class="thought-content">
+          <p><%= thought.content %></p>
+        </div>
+
+        <!-- Like & Comment Section -->
+        <div class="thought-actions">
+          <button class="like-btn" onclick="toggleLike(this)">
+            ❤️ <span class="like-count"><%= thought.likes.count %></span>
+          </button>
+          <button class="comment-toggle" onclick="toggleComments(this)">💬 Comments</button>
+        </div>
+
+        <!-- Hidden Comments Section -->
+        <div class="comments-section">
+          <% thought.comments.each do |comment| %>
+            <p><strong><%= comment.user.name %>:</strong> <%= comment.content %></p>
+          <% end %>
+          <!--div class="comment-input">
+    <input type="text" class="comment-box" placeholder="Write a comment..." />
+    <button class="submit-comment">Post</button>
+  </div-->
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No thoughts available.</p>
+  <% end %>
+</div>
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Like Button Toggle
+    document.querySelectorAll(".like-btn").forEach((button) => {
+      button.addEventListener("click", function () {
+        this.classList.toggle("liked");
+        let likeCount = this.querySelector(".like-count");
+        let currentLikes = parseInt(likeCount.innerText);
+        likeCount.innerText = this.classList.contains("liked") ? currentLikes + 1 : currentLikes - 1;
+      });
+    });
+
+    // Comment Toggle
+    document.querySelectorAll(".comment-toggle").forEach((button) => {
+      button.addEventListener("click", function () {
+        let commentSection = this.closest(".thought-card").querySelector(".comments-section");
+        commentSection.style.display = commentSection.style.display === "block" ? "none" : "block";
+      });
+    });
+
+    // Handle Comment Submission
+    document.querySelectorAll(".submit-comment").forEach((button) => {
+      button.addEventListener("click", function () {
+        let commentInput = this.previousElementSibling; // Input box
+        let commentText = commentInput.value.trim();
+        if (commentText === "") return; // Don't add empty comments
+
+        let newComment = document.createElement("p");
+        newComment.innerHTML = `<strong>You:</strong> ${commentText}`;
+        
+        let commentSection = this.closest(".comments-section");
+        commentSection.insertBefore(newComment, commentSection.querySelector(".comment-input"));
+
+        commentInput.value = ""; // Clear input after posting
+      });
+    });
+  });
+</script>
+

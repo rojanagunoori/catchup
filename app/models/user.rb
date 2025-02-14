@@ -87,7 +87,8 @@ class User < ApplicationRecord
 
     def generate_password_reset_token!
       self.reset_password_token = SecureRandom.urlsafe_base64
-      self.reset_password_sent_at = Time.zone.now
+      self.reset_password_sent_at = Time.current
+      #self.reset_password_sent_at = Time.zone.now
       save!
     end
     

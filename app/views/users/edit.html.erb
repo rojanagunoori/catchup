@@ -1,4 +1,103 @@
-﻿<div class="card mx-auto" style="max-width: 500px;">
+﻿<style>
+/* Card Styling */
+.card {
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* Card Header */
+.card-header {
+  background: linear-gradient(135deg, #d63384, #a91d64);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 15px;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Input Fields */
+.form-label {
+  font-weight: bold;
+  color: #a91d64;
+}
+
+.form-control {
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #d63384;
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #a91d64;
+  box-shadow: 0 0 10px rgba(214, 51, 132, 0.5);
+  transform: scale(1.02);
+}
+
+/* Button Styling */
+.btn-primary {
+  background: linear-gradient(135deg, #d63384, #a91d64);
+  border: none;
+  padding: 12px 18px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #a91d64, #d63384);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(214, 51, 132, 0.3);
+}
+
+/* Text Center */
+.text-center {
+  margin-top: 15px;
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+/* Keyframe Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* File Input Customization */
+input[type="file"] {
+  border: none;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+input[type="file"]:hover {
+  background: rgba(214, 51, 132, 0.1);
+}
+
+</style>
+
+
+<div class="card mx-auto" style="max-width: 500px;">
   <div class="card-header">
     <h5>Edit Profile</h5>
   </div>
@@ -21,11 +120,11 @@
         <%= f.file_field :profile_picture, class: "form-control" %>
       </div>
 
-      <!-- Profile Picture via URL -->
+      <!-- Profile Picture via URL 
       <div class="mb-3">
         <%= f.label :profile_picture_url, "Profile Picture URL" %>
         <%= f.text_field :profile_picture_url, class: "form-control" %>
-      </div>
+      </div>-->
 
       <div class="text-center">
         <%= f.submit "Update", class: "btn btn-primary" %>

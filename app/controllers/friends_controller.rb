@@ -11,10 +11,16 @@ class FriendsController < ApplicationController
       @search_query = params[:search]
       #@search_query = params[:query]
       
-      if params[:query].present?
-        @users = User.where("name ILIKE ?", "%#{params[:query]}%")
+      #if params[:query].present?
+        #@users = User.where("name ILIKE ?", "%#{params[:query]}%")
+      #else
+       # @users = User.all # Show all users by default
+      #end
+
+      if params[:query].nil? || params[:query].strip == ""
+        @users = User.all # Show all users when search input is empty
       else
-        @users = User.all # Show all users by default
+        @users = User.where("name ILIKE ?", "%#{params[:query]}%") # Filter users
       end
   
       @friends = current_user.friends

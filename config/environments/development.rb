@@ -73,17 +73,9 @@ Rails.application.configure do
 
 
   #config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
+  #config.action_mailer.perform_deliveries = true
   # Looking to send emails in production? Check out our Email API/SMTP product!
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-  user_name: 'b110a1e0da13b6',
-  password: '22f480a67e6db6',
-  address: 'sandbox.smtp.mailtrap.io',
-  host: 'sandbox.smtp.mailtrap.io',
-  port: '2525',
-  authentication: :login
-}
+
 
   config.action_mailer.default_options = { from: 'your-email@gmail.com' }
   config.action_mailer.delivery_method = :letter_opener

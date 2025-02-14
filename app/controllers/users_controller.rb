@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   #end
 
   def show
-    @user = current_user || User.find_by(id: params[:id])
+    @user =  User.find_by(id: params[:id]) # || current_user 
   
     if @user.nil?
       redirect_to login_path, alert: "Please log in to view your profile."

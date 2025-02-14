@@ -55,11 +55,12 @@ color:#d63384;
 /* Thoughts List */
 .thought-item {
   
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+background: white;
+padding: 15px;
+margin: 15px 0;
+border-radius: 15px;
+border-left: 5px solid #d63384;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .thought-item:hover {
@@ -80,6 +81,21 @@ color:#d63384;
   height: 50px;
   border-radius: 50%;
   margin-bottom: 5px;
+}
+
+.thought-items1{
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.thought-iems  img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #d63384;
 }
 
 /* Thought Sharing Box */
@@ -205,6 +221,100 @@ align-items: flex-start;
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ❤️ Like & Comment Toggle */
+.thought-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  color: #d63384;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.like-btn.liked {
+  color: #b0296e;
+}
+
+.comment-toggle {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.comments-section {
+  display: none;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.comments-section p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* 🎬 Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 8px;
+  border-top: 1px solid #d63384;
+}
+
+.comment-box {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #d63384;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.comment-box:focus {
+  border-color: #b0296e;
+  box-shadow: 0 0 8px rgba(214, 51, 132, 0.5);
+}
+
+.submit-comment {
+  padding: 10px 15px;
+  background-color: #d63384;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-comment:hover {
+  background-color: #b0296e;
+  transform: scale(1.05);
+  box-shadow: 0 5px 10px rgba(214, 51, 132, 0.3);
+}
+
+.submit-comment:active {
+  background-color: #921e57;
+  transform: scale(0.95);
+}
+
+
 </style>
 
 <div class="row">
@@ -285,6 +395,7 @@ align-items: flex-start;
           <span class="text-muted"><%= time_ago_in_words(comment.created_at) %> ago</span>
 
           <!-- Like Button for Comment -->
+          
           <%= button_to "Like (#{comment.likes.size})", like_comment_path(comment), method: :post, class: "btn btn-sm btn-outline-danger" %>
 
         </div>
