@@ -187,7 +187,7 @@ class FriendsController < ApplicationController
       if @query.present?
         @friends = User.where("name LIKE ?", "%#{@query}%")
       else
-        @friends = User.none # Prevents loading all users when query is empty
+        @friends =User.all #User.none # Prevents loading all users when query is empty
       end
       @pending_requests = current_user.pending_friend_requests || [] # Ensure it's not nil
       render :index
