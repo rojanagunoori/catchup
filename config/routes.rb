@@ -3,8 +3,8 @@
   #devise_for :users, skip: [:registrations]
 
   # Root route (login page if not authenticated)
-  #root to: "sessions#new"
-  root to: "home#index"
+  root to: "sessions#new"
+  #root to: "home#index"
 
   
   # Authentication routes
