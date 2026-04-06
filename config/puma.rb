@@ -42,24 +42,15 @@
 
 
 # Puma configuration for low-memory environments (Render 512MB)
-
-# Threads per worker
-threads_count = ENV.fetch("RAILS_MAX_THREADS", 3).to_i
-threads threads_count, threads_count
-
-# Port to listen on
+threads 2, 2        # low threads to save memory
 port ENV.fetch("PORT", 3000)
 
-# Single worker for low memory
-workers Integer(ENV.fetch("WEB_CONCURRENCY", 1))
+workers 1           # force single worker
+preload_app!        # use copy-on-write for memory efficiency
 
-preload_app!  # Preload app before forking worker to save memory with Copy-On-Write
-
-# Allow puma to be restarted by `bin/rails restart` command
 plugin :tmp_restart
 
-# Optional: only load Solid Queue if environment variable is set
-plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
+# Disable Solid Queue in Puma for low memory
+# plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 
-# PID file (optional)
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
