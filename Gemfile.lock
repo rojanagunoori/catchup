@@ -204,6 +204,8 @@ GEM
     parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
+    pg (1.6.3-x64-mingw-ucrt)
+    pg (1.6.3-x86_64-linux)
     popper_js (2.11.8)
     pp (0.6.2)
       prettyprint
@@ -409,6 +411,7 @@ DEPENDENCIES
   jbuilder
   kamal
   letter_opener (~> 1.10)
+  pg (~> 1.6)
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.1)
