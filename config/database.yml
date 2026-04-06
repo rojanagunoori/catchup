@@ -21,3 +21,7 @@ production:
   password: <%= ENV['CATCHUP_DB_PASSWORD'] %>
   host: <%= ENV['CATCHUP_DB_HOST'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
+cable:
+  <<: *production
