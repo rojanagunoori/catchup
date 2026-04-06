@@ -1,4 +1,29 @@
-﻿# config/database.yml
+﻿# # config/database.yml
+
+# default: &default
+#   adapter: sqlite3
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   timeout: 5000
+
+# development:
+#   <<: *default
+#   database: storage/development.sqlite3
+
+# test:
+#   <<: *default
+#   database: storage/test.sqlite3
+
+# production:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: <%= ENV['CATCHUP_DB_NAME'] %>
+#   username: <%= ENV['CATCHUP_DB_USER'] %>
+#   password: <%= ENV['CATCHUP_DB_PASSWORD'] %>
+#   host: <%= ENV['CATCHUP_DB_HOST'] %>
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+# cable:
+#   <<: *production
 
 default: &default
   adapter: sqlite3
@@ -13,7 +38,7 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-production:
+production: &production
   adapter: postgresql
   encoding: unicode
   database: <%= ENV['CATCHUP_DB_NAME'] %>
@@ -21,7 +46,6 @@ production:
   password: <%= ENV['CATCHUP_DB_PASSWORD'] %>
   host: <%= ENV['CATCHUP_DB_HOST'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
 
 cable:
   <<: *production
