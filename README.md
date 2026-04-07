@@ -4,6 +4,26 @@
 [![Ruby](https://img.shields.io/badge/Ruby-3.2-red?style=flat-square)](https://www.ruby-lang.org/)  
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
+<video controls style="max-width: 100%;">
+  <source src="https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup.mp4" type="video/mp4">
+</video>
+
+<!-- 👉 If video doesn't play, click here:
+[▶ Watch Demo](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup.mp4) -->
+
+---
+
+## 📸 Screenshots
+
+## 📸 Screenshots
+
+![Screenshot 1](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup1.png)
+![Screenshot 2](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup2.png)
+![Screenshot 3](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup3.png)
+![Screenshot 4](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup4.png)
+![Screenshot 5](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup5.png)
+![Screenshot 6](https://raw.githubusercontent.com/rojanagunoori/catchup/main/public/catchup6.png)
+
 **CatchUp** is a social networking platform built with **Ruby on Rails**. Users can share thoughts, like and comment on posts, manage friendships, and experience real-time updates via ActionCable.
 
 **Live Demo:** [https://catchup-1-lj7q.onrender.com](https://catchup-1-lj7q.onrender.com)  
